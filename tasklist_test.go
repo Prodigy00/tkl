@@ -2,6 +2,7 @@ package tasklist_test
 
 import (
 	"bytes"
+	"log"
 	tasklist "tasklist-cli"
 	"testing"
 )
@@ -13,9 +14,16 @@ import (
 *Flags are boolean options that do not take user input.
  */
 
+// save tasks to a file
 func TestAddTask(t *testing.T) {
 	t.Parallel()
-
+	stubFile := &bytes.Buffer{}
+	cmd := "add"
+	task := "new test task"
+	err := tasklist.AddTask([]string{cmd, task})
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func TestPrintTklWelcomeMsgToWriter(t *testing.T) {
