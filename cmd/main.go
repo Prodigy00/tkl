@@ -2,11 +2,8 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"github.com/enescakir/emoji"
 	"log"
-	"strings"
-	"time"
+	"tasklist-cli/subcommands"
 )
 
 var (
@@ -26,83 +23,19 @@ func main() {
 
 	switch cmd {
 	case "add":
-		add(args)
+		subcommands.Add(args)
 	case "list":
-		list(args)
+		subcommands.List(args)
 	case "update":
-		update(args)
+		subcommands.Update(args)
 	case "delete":
-		deleteTask(args)
+		subcommands.DeleteTask(args)
 	default:
 		log.Fatalf("Unrecognized command %q. Command must be one of add, list, update, delete", cmd)
 	}
 }
 
-type Task map[string]string
-
-type TaskFile struct {
-	Tasks []Task
-}
-
-func (t *TaskFile) GetTasks() []Task {
-	return t.Tasks
-}
-
-func (t *TaskFile) Add(tk Task) {
-	t.Tasks = append(t.Tasks, tk)
-}
-
-func add(args []string) {
-	flag := flag.NewFlagSet("add", flag.ExitOnError)
-
-	var (
-		taskname = flag.String("t", "", "name of the task to be added. (Required)")
-		level    = flag.Int("l", 0, "urgency level of task. 0 for the least urgent tasks, 1 for mildly urgent and 2 for top priority tasks")
-	)
-
-	err := flag.Parse(args)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	//fmt.Printf(" taskname: %s, level: %d ", *taskname, *level)
-	var id string
-	var priority emoji.Emoji
-	var taskdate string
-
-	if *taskname != "" {
-		ta := time.Now().Local().String()
-		taskdate = ta
-		splitTa := strings.Split(ta, " ")[:2]
-
-		joinedTa := strings.Join(splitTa, "")
-		id = "task–" + joinedTa
-	}
-
-	switch *level {
-	case 2:
-		priority = emoji.RedSquare
-	case 1:
-		priority = emoji.YellowSquare
-	default:
-		priority = emoji.GreenSquare
-	}
-
-	newMap := make(Task)
-
-	newMap[id] = " " + priority.String() + " " + *taskname + " " + taskdate
-
-	var tkf TaskFile
-
-	tkf.Add(newMap)
-
-	for k, v := range tkf.GetTasks() {
-		fmt.Println(k, " : ", v)
-	}
-}
-func list(args []string)       {}
-func update(args []string)     {}
-func deleteTask(args []string) {}
+//replace task file struct with a file that will be created if it doesn't already exist
 
 //func root(args []string) error {
 //	if len(args) < 1 {
