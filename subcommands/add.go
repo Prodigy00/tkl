@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"github.com/enescakir/emoji"
-	"io"
 	"log"
 	"os"
 	"strings"
@@ -17,8 +16,6 @@ type Task string
 type TaskFile struct {
 	file  os.File
 	tasks []Task
-	io.Reader
-	io.Writer
 }
 
 func NewTaskFile() *TaskFile {
