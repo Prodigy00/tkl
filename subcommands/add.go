@@ -1,7 +1,6 @@
 package subcommands
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
 	"github.com/enescakir/emoji"
@@ -9,6 +8,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"tasklist-cli/util"
 	"time"
 )
 
@@ -22,38 +22,43 @@ type TaskFile struct {
 }
 
 func NewTaskFile() *TaskFile {
-	f, err := os.Create("tklfile.txt")
-	if err != nil {
-		log.Fatal("Could not create taskfile")
+	//check if file already exists first before creating a new file
+	var filename = "tklfile.txt"
+
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		f, err := os.Create(filename)
+		if err != nil {
+			log.Fatal("Could not create taskfile")
+		}
+
+		defer util.CloseFile(f)
+
+		return &TaskFile{
+			file:  *f,
+			tasks: []Task{},
+		}
 	}
 
-	defer closeFile(f)
+	f, err := os.Open(filename)
+	if err != nil {
+		log.Fatal("could not open taskfile")
+	}
+	defer util.CloseFile(f)
+
+	tasks, err := util.ReadTasksFromFile(f)
+	if err != nil {
+		fmt.Println("error getting tasks", err)
+	}
+
+	var ft []Task
+	for _, t := range tasks {
+		ft = append(ft, Task(t))
+	}
 
 	return &TaskFile{
 		file:  *f,
-		tasks: []Task{},
+		tasks: ft,
 	}
-}
-
-func closeFile(f *os.File) {
-	closeErr := f.Close()
-	if closeErr != nil {
-		log.Fatalf("error occurred closing the file. Err: %v", closeErr)
-	}
-}
-
-func readFile(f *os.File) (ts []string, err error) {
-	var taskslice []string
-	reader := bufio.NewScanner(f)
-
-	for reader.Scan() {
-		taskslice = append(taskslice, reader.Text())
-	}
-
-	if scanErr := reader.Err(); scanErr != nil {
-		return nil, scanErr
-	}
-	return taskslice, nil
 }
 
 type Level int
@@ -65,8 +70,6 @@ const (
 )
 
 func (t *TaskFile) AddTask(tk Task) {
-	t.tasks = append(t.tasks, tk)
-
 	var filename = t.file.Name()
 
 	if len(filename) < 3 {
@@ -74,19 +77,11 @@ func (t *TaskFile) AddTask(tk Task) {
 		fmt.Println("got here")
 	}
 
-	//append content to file
-	tklFile, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_RDWR, 666)
+	err := AppendTaskToFile(filename, tk)
 	if err != nil {
-		fmt.Errorf("error opening file")
+		fmt.Println("err appending to file", err)
 	}
-
-	defer closeFile(tklFile)
-
-	_, writeErr := tklFile.WriteString(string(tk))
-
-	if writeErr != nil {
-		log.Fatal(writeErr)
-	}
+	fmt.Println("Task added successfully!")
 }
 
 func Add(args []string) {
@@ -134,8 +129,21 @@ func Add(args []string) {
 
 	taskentry := Task(entry.String())
 
-	tklF := NewTaskFile()
-	tklF.tasks = append(tklF.tasks, taskentry)
+	tkF := NewTaskFile()
+	tkF.AddTask(taskentry)
+}
 
-	tklF.AddTask(taskentry)
+func AppendTaskToFile(filename string, task Task) error {
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+	if err != nil {
+		return fmt.Errorf("failed to open file: %v", err)
+	}
+	defer util.CloseFile(file)
+
+	_, err = file.WriteString(fmt.Sprintf("%s\n", task))
+	if err != nil {
+		return fmt.Errorf("failed to append to file: %v", err)
+	}
+
+	return nil
 }
