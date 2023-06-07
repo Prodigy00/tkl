@@ -21,21 +21,21 @@ const (
        adds the date of creation automatically
 	`
 	listMsg = `
-	subcommand name: list
+    subcommand name: list
     subcommand options:
          None yet
     default actions:
        lists tasks
 	`
 	updateMsg = `
-	subcommand name: update
+    subcommand name: update
     subcommand options:
          None yet
     default actions:
        update a task
 	`
 	deleteMsg = `
-	subcommand name: delete
+    subcommand name: delete
     subcommand options:
          None yet
     default actions:
@@ -43,12 +43,12 @@ const (
 	`
 )
 
-func NewHelp() *Help {
+func GetHelp() *Help {
 	dM := make(Help)
 	dM[AddCmd] = addMsg
 	dM[ListCmd] = listMsg
 	dM[UpdateCmd] = updateMsg
-	dM[DeleteCmd] = updateMsg
+	dM[DeleteCmd] = deleteMsg
 
 	return &Help{
 		AddCmd:    dM[AddCmd],
@@ -61,4 +61,13 @@ func NewHelp() *Help {
 func (h *Help) PrintSubcommandHelp(name string) {
 	var cmd = *h
 	fmt.Println(cmd[name])
+}
+
+func (h *Help) PrintHelpList() {
+	for cmd, help := range *h {
+		fmt.Printf("subcommand: %v", cmd)
+		fmt.Println()
+		fmt.Println("usage: ")
+		fmt.Println(help)
+	}
 }

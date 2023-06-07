@@ -24,6 +24,8 @@ func Add(args []string) {
 	var (
 		taskname = flag.String("t", "", "name of the task to be added. (Required)")
 		level    = flag.Int("l", 0, "urgency level of task. 0 for the least urgent tasks, 1 for mildly urgent and 2 for top priority tasks")
+		help     = flag.Bool("h", false, "help flag for add subcomand")
+		helpSub  = flag.Bool("help", false, "help flag for add subcomand")
 	)
 
 	err := flag.Parse(args)
@@ -31,6 +33,10 @@ func Add(args []string) {
 		log.Fatal(err)
 	}
 
+	if *help || *helpSub {
+		GetHelp().PrintSubcommandHelp("add")
+		os.Exit(0)
+	}
 	//fmt.Printf(" taskname: %s, level: %d ", *taskname, *level)
 	var id string
 	var priority emoji.Emoji

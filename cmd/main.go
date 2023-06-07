@@ -29,6 +29,8 @@ func main() {
 		subcommands.Update(args)
 	case "delete":
 		subcommands.DeleteTask(args)
+	case "help":
+		subcommands.GetHelp().PrintHelpList()
 	default:
 		log.Fatalf("Unrecognized command %q. Command must be one of add, list, update, delete", cmd)
 	}

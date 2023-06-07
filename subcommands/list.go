@@ -14,9 +14,20 @@ const buf = 1024
 func List(args []string) {
 	flag := flag.NewFlagSet("list", flag.ExitOnError)
 
+	var (
+		//limit   = flag.Int("n", 0, "number of tasks you want displayed")
+		help    = flag.Bool("h", false, "help flag for add subcomand")
+		helpSub = flag.Bool("help", false, "help flag for add subcomand")
+	)
+
 	err := flag.Parse(args)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	if *help || *helpSub {
+		GetHelp().PrintSubcommandHelp("list")
+		os.Exit(0)
 	}
 	//list all tasks in chunks
 	readFile("tklfile.txt")
@@ -38,7 +49,7 @@ func readFile(filename string) {
 
 	if fi.Size() == 0 {
 		log.Printf("no tasks added, try adding some tasks %s", emoji.Rocket)
-		NewHelp().PrintSubcommandHelp("add")
+		GetHelp().PrintSubcommandHelp("add")
 		os.Exit(1)
 	}
 
