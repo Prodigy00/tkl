@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-const buf = 1024
+var buf = 1024
 
 func List(args []string) {
 	flag := flag.NewFlagSet("list", flag.ExitOnError)
@@ -57,6 +57,7 @@ func readFile(filename string) {
 
 	for {
 		bytesRead, err := f.Read(buffer)
+
 		if err != nil {
 			if err == io.EOF {
 				break

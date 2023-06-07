@@ -51,10 +51,14 @@ func Add(args []string) {
 		taskidnum = len(tkF.tasks)
 	}
 
-	if *taskname != "" {
-		taskdate = time.Now().Local().String()
-		id = "task–" + strconv.Itoa(taskidnum+1)
+	if *taskname == "" {
+		fmt.Println("task name is required")
+		GetHelp().PrintSubcommandHelp("add")
+		os.Exit(1)
 	}
+
+	taskdate = time.Now().Local().String()
+	id = "task–" + strconv.Itoa(taskidnum+1)
 
 	switch *level {
 	case 2:
