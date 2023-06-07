@@ -18,69 +18,6 @@ type TaskFile struct {
 	tasks []Task
 }
 
-func NewTaskFile() *TaskFile {
-	//check if file already exists first before creating a new file
-	var filename = "tklfile.txt"
-
-	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		f, err := os.Create(filename)
-		if err != nil {
-			log.Fatal("Could not create taskfile")
-		}
-
-		defer util.CloseFile(f)
-
-		return &TaskFile{
-			file:  *f,
-			tasks: []Task{},
-		}
-	}
-
-	f, err := os.Open(filename)
-	if err != nil {
-		log.Fatal("could not open taskfile")
-	}
-	defer util.CloseFile(f)
-
-	tasks, err := util.ReadTasksFromFile(f)
-	if err != nil {
-		fmt.Println("error getting tasks", err)
-	}
-
-	var ft []Task
-	for _, t := range tasks {
-		ft = append(ft, Task(t))
-	}
-
-	return &TaskFile{
-		file:  *f,
-		tasks: ft,
-	}
-}
-
-type Level int
-
-const (
-	NormalTaskLevel Level = iota
-	ImportantTaskLevel
-	CriticalTaskLeveL
-)
-
-func (t *TaskFile) AddTask(tk Task) {
-	var filename = t.file.Name()
-
-	if len(filename) < 3 {
-		filename = "taskfile.txt"
-		fmt.Println("got here")
-	}
-
-	err := AppendTaskToFile(filename, tk)
-	if err != nil {
-		fmt.Println("err appending to file", err)
-	}
-	fmt.Println("Task added successfully!")
-}
-
 func Add(args []string) {
 	flag := flag.NewFlagSet("add", flag.ExitOnError)
 
@@ -128,6 +65,61 @@ func Add(args []string) {
 
 	tkF := NewTaskFile()
 	tkF.AddTask(taskentry)
+}
+
+func NewTaskFile() *TaskFile {
+	//check if file already exists first before creating a new file
+	var filename = "tklfile.txt"
+
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		f, err := os.Create(filename)
+		if err != nil {
+			log.Fatal("Could not create taskfile")
+		}
+
+		defer util.CloseFile(f)
+
+		return &TaskFile{
+			file:  *f,
+			tasks: []Task{},
+		}
+	}
+
+	f, err := os.Open(filename)
+	if err != nil {
+		log.Fatal("could not open taskfile")
+	}
+	defer util.CloseFile(f)
+
+	tasks, err := util.ReadTasksFromFile(f)
+	if err != nil {
+		fmt.Println("error getting tasks", err)
+	}
+
+	var ft []Task
+	for _, t := range tasks {
+		ft = append(ft, Task(t))
+	}
+
+	return &TaskFile{
+		file:  *f,
+		tasks: ft,
+	}
+}
+
+func (t *TaskFile) AddTask(tk Task) {
+	var filename = t.file.Name()
+
+	if len(filename) < 3 {
+		filename = "taskfile.txt"
+		fmt.Println("got here")
+	}
+
+	err := AppendTaskToFile(filename, tk)
+	if err != nil {
+		fmt.Println("err appending to file", err)
+	}
+	log.Printf("%s Task added successfully!", emoji.WritingHand)
 }
 
 func AppendTaskToFile(filename string, task Task) error {
