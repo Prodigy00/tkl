@@ -6,6 +6,7 @@ import (
 	"github.com/enescakir/emoji"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 	"tasklist-cli/util"
 	"time"
@@ -37,18 +38,22 @@ func Add(args []string) {
 		GetHelp().PrintSubcommandHelp("add")
 		os.Exit(0)
 	}
-	//fmt.Printf(" taskname: %s, level: %d ", *taskname, *level)
+
 	var id string
 	var priority emoji.Emoji
 	var taskdate string
+	var taskidnum int
+
+	//check if task exists first
+	tkF := NewTaskFile()
+
+	if len(tkF.tasks) > 0 {
+		taskidnum = len(tkF.tasks)
+	}
 
 	if *taskname != "" {
-		ta := time.Now().Local().String()
-		taskdate = ta
-		splitTa := strings.Split(ta, " ")[:2]
-
-		joinedTa := strings.Join(splitTa, "")
-		id = "task–" + joinedTa
+		taskdate = time.Now().Local().String()
+		id = "task–" + strconv.Itoa(taskidnum+1)
 	}
 
 	switch *level {
@@ -60,7 +65,6 @@ func Add(args []string) {
 		priority = emoji.GreenSquare
 	}
 
-	//fmt.Println("id: ", id, " :", priority, " task: ", *taskname, " date: ", taskdate)
 	entry := strings.Builder{}
 	entry.WriteString(fmt.Sprintf("%v: ", id))
 	entry.WriteString(fmt.Sprintf("%v ", priority))
@@ -69,7 +73,6 @@ func Add(args []string) {
 
 	taskentry := Task(entry.String())
 
-	tkF := NewTaskFile()
 	tkF.AddTask(taskentry)
 }
 
