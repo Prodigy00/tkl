@@ -1,6 +1,9 @@
 package subcommands
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 type Help map[string]string
 
@@ -17,13 +20,17 @@ const (
     subcommand options:
          -t : task name(string),
          -l : level of importance (int)(0,1,2)
+	     -h : description for add subcommand
+	     -help: description for add subcommand
     default actions:
        adds the date of creation automatically
 	`
 	listMsg = `
     subcommand name: list
     subcommand options:
-         None yet
+         -n : limit number of tasks you want to list, defaults to 0 which means no limits
+         -h : description for list subcommand
+         -help : description for list subcommand
     default actions:
        lists tasks
 	`
@@ -64,10 +71,19 @@ func (h *Help) PrintSubcommandHelp(name string) {
 }
 
 func (h *Help) PrintHelpList() {
-	for cmd, help := range *h {
+	cmdMap := *h
+
+	keyNames := make([]string, 0, 4)
+
+	for k, _ := range cmdMap {
+		keyNames = append(keyNames, k)
+	}
+	sort.Strings(keyNames)
+
+	for _, cmd := range keyNames {
 		fmt.Printf("subcommand: %v", cmd)
 		fmt.Println()
-		fmt.Println("usage: ")
-		fmt.Println(help)
+		fmt.Print("usage: ")
+		fmt.Println(cmdMap[cmd])
 	}
 }

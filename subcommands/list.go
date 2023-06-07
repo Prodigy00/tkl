@@ -16,8 +16,8 @@ func List(args []string) {
 
 	var (
 		//limit   = flag.Int("n", 0, "number of tasks you want displayed")
-		help    = flag.Bool("h", false, "help flag for add subcomand")
-		helpSub = flag.Bool("help", false, "help flag for add subcomand")
+		help    = flag.Bool("h", false, "help flag for list subcomand")
+		helpSub = flag.Bool("help", false, "help flag for list subcomand")
 	)
 
 	err := flag.Parse(args)

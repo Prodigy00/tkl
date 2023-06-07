@@ -102,7 +102,7 @@ func NewTaskFile() *TaskFile {
 
 	tasks, err := util.ReadTasksFromFile(f)
 	if err != nil {
-		fmt.Println("error getting tasks", err)
+		log.Fatal("error getting tasks", err)
 	}
 
 	var ft []Task
@@ -121,12 +121,11 @@ func (t *TaskFile) AddTask(tk Task) {
 
 	if len(filename) < 3 {
 		filename = "taskfile.txt"
-		fmt.Println("got here")
 	}
 
 	err := AppendTaskToFile(filename, tk)
 	if err != nil {
-		fmt.Println("err appending to file", err)
+		log.Fatal("err appending to file: ", err)
 	}
 	log.Printf("%s Task added successfully!", emoji.WritingHand)
 }

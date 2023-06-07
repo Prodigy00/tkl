@@ -2,16 +2,25 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
+	"os"
 	"tasklist-cli/subcommands"
 )
 
 var (
-	_version = flag.String("v", "0.1.0", "installed version of tasklist cli")
+	appVersion  = "0.1.0"
+	_version    = flag.Bool("v", false, "installed version of tasklist cli")
+	_versionSub = flag.Bool("version", false, "installed version of tasklist cli")
 )
 
 func main() {
 	flag.Parse()
+
+	if *_version || *_versionSub {
+		fmt.Println(appVersion)
+		os.Exit(0)
+	}
 
 	args := flag.Args()
 	if len(args) < 1 {
