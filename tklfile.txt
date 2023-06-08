@@ -1,0 +1,5 @@
+task–1: 🟥 write tests for add.go and list.go 2023-06-08 05:25:23.661338 +0100 WAT
+task–2: 🟨 update subcommand should accept a name flag which reps task-id and a bool flag to update the task to done or not done. Tasks that are done should have a strikethrough on them 2023-06-08 05:30:00.272187 +0100 WAT
+task–3: 🟨 delete subcommand should take an id e.g -id task-1 that takes the task-id and deletes the given task from the file  2023-06-08 05:33:36.710556 +0100 WAT
+task–4: 🟨 delete subcommand should take a boolean flag that deletes all tasks, add an extra prompt that asks the user if they want to do that, it will accept y/n as valid answers 2023-06-08 05:35:46.660698 +0100 WAT
+task–5: 🟨 update subcommand should be all to update all tasks to done or not done 2023-06-08 05:38:35.002905 +0100 WAT
