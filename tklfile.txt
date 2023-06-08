@@ -3,3 +3,4 @@ task–2: 🟨 update subcommand should accept a name flag which reps task-id an
 task–3: 🟨 delete subcommand should take an id e.g -id task-1 that takes the task-id and deletes the given task from the file  2023-06-08 05:33:36.710556 +0100 WAT
 task–4: 🟨 delete subcommand should take a boolean flag that deletes all tasks, add an extra prompt that asks the user if they want to do that, it will accept y/n as valid answers 2023-06-08 05:35:46.660698 +0100 WAT
 task–5: 🟨 update subcommand should be all to update all tasks to done or not done 2023-06-08 05:38:35.002905 +0100 WAT
+task–6: 🟩 explore using go routines to optimize file creation and other ops for faster results i.e channels, waitgroups 2023-06-08 05:42:19.878542 +0100 WAT
