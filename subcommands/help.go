@@ -28,7 +28,6 @@ const (
 	listMsg = `
     subcommand name: list
     subcommand options:
-         -n : limit number of tasks you want to list, defaults to 0 which means no limits
          -h : description for list subcommand
          -help : description for list subcommand
     default actions:
