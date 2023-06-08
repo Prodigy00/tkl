@@ -68,7 +68,8 @@ go build
 ```
 
 ## Sample
- ![tkl sample ss 2.png](..%2F..%2FDesktop%2Ftkl%20sample%20ss%202.png)
+ <img width="1440" alt="tkl sample ss 2" src="https://github.com/Prodigy00/tkl/assets/19712590/5bbf52af-a4ef-43f8-8c26-258415063c4d">
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
