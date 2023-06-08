@@ -4,7 +4,7 @@ tkl is a command line productivity tool that enables devs to have all their `//T
 
 ## Features
 
-- Add tasks defined by their level of urgency
+- Add tasks defined by their level of urgency(red emojis for mission critical tasks, yellow for important-but-not-urgent tasks and green for normal tasks)
 - List tasks
 - Update tasks, marking them done/not done(incoming, wip)
 - Delete tasks(incoming, wip)
