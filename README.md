@@ -68,7 +68,8 @@ go build
 ```
 
 ## Sample
- <img width="1440" alt="tkl sample ss 2" src="https://github.com/Prodigy00/tkl/assets/19712590/5bbf52af-a4ef-43f8-8c26-258415063c4d">
+<img width="1440" alt="tkl sample ss 1" src="https://github.com/Prodigy00/tkl/assets/19712590/d9277b46-21a6-4432-a5bd-7119261c6aa3">
+<img width="1440" alt="tkl sample ss 2" src="https://github.com/Prodigy00/tkl/assets/19712590/5bbf52af-a4ef-43f8-8c26-258415063c4d">
 
 ## License
 
